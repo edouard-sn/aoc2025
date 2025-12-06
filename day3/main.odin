@@ -20,18 +20,19 @@ main :: proc() {
 	battery_list, merr := strings.split(batteries, "\n")
 	if merr != nil {
 		fmt.printf("memory error: %v", merr)
+		return
 	}
 
-	password, ok2 := 0, false
+	password, ok := 0, false
 	switch args[1] {
 	case "ex1":
-		password, ok2 = get_max_joltage_sum(battery_list)
+		password, ok = get_max_joltage_sum(battery_list)
 	case "ex2":
 		fallthrough
 	}
 
-	if ok2 {
-		fmt.printf("invalid ids sum: %d\n", password)
+	if ok {
+		fmt.printf("max joltages sum: %d\n", password)
 	} else {
 		fmt.printf("invalid moves")
 	}

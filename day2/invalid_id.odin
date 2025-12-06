@@ -5,22 +5,16 @@ import "core:math"
 import "core:strconv"
 import "core:strings"
 
-get_password :: proc(ranges: []string) -> (int, bool) {
-	res := 0
+get_password :: proc(ranges: []string) -> (res: int, ok: bool) {
 	for range in ranges {
 		range_list, merr := strings.split(range, "-")
 		if merr != nil {
 			fmt.printf("memory error: %v", merr)
-			return 0, false
+			return
 		}
-		r_min, okmin := strconv.parse_int(range_list[0], 10)
-		if !okmin {
-			return 0, false
-		}
-		r_max, okmax := strconv.parse_int(range_list[1], 10)
-		if !okmax {
-			return 0, false
-		}
+		r_min := strconv.parse_int(range_list[0], 10) or_return
+		r_max := strconv.parse_int(range_list[1], 10) or_return
+
 		for i := r_min; i <= r_max; i += 1 {
 			f_n_digit := math.floor(math.log10(f64(i))) + 1
 			n_digit := int(f_n_digit)
@@ -50,34 +44,25 @@ clerk_pass :: proc(n: int, n_digit: int) -> bool {
 		}
 		factor := int(math.pow10(f64(n_digit / i)))
 		ref := n % factor
-		n_clone := n / factor
-		for j := 0; j < i - 1; j += 1 {
+		for n_clone := n / factor; n_clone != 0; n_clone /= factor {
 			if n_clone % factor != ref {
 				continue outer
 			}
-			n_clone /= factor
 		}
 		return true
 	}
 	return false
 }
 
-get_password_clerk_pass :: proc(ranges: []string) -> (int, bool) {
-	res := 0
+get_password_clerk_pass :: proc(ranges: []string) -> (res: int, ok: bool) {
 	for range in ranges {
 		range_list, merr := strings.split(range, "-")
 		if merr != nil {
 			fmt.printf("memory error: %v", merr)
 			return 0, false
 		}
-		r_min, okmin := strconv.parse_int(range_list[0], 10)
-		if !okmin {
-			return 0, false
-		}
-		r_max, okmax := strconv.parse_int(range_list[1], 10)
-		if !okmax {
-			return 0, false
-		}
+		r_min := strconv.parse_int(range_list[0], 10) or_return
+		r_max := strconv.parse_int(range_list[1], 10) or_return
 		for i := r_min; i <= r_max; i += 1 {
 			f_n_digit := math.floor(math.log10(f64(i))) + 1
 			n_digit := int(f_n_digit)
