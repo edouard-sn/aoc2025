@@ -26,9 +26,9 @@ main :: proc() {
 	password, ok := 0, false
 	switch args[1] {
 	case "ex1":
-		password, ok = get_max_joltage_sum(battery_list)
+		password, ok = get_max_n_joltage_sum(battery_list, 2)
 	case "ex2":
-		fallthrough
+		password, ok = get_max_n_joltage_sum(battery_list, 12)
 	}
 
 	if ok {
